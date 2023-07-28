@@ -1,31 +1,37 @@
-import React, {useState} from "react";
 import {Form, Input, Button, message, Checkbox} from "antd";
 import {UserOutlined, LockOutlined} from "@ant-design/icons";
 import './index.scss'
 import {useNavigate} from "react-router-dom";
+import useUserStore from "@/store/user";
+import {shallow} from "zustand/shallow";
+import useTokenStore from "@/store/token";
 
 const Login = () => {
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
     const navigate = useNavigate()
+    const [user,setUser] = useUserStore(
+        (state: any) => [state.user,state.setUser],
+        shallow
+    )
+    const [setToken] = useTokenStore(
+        (state: any) => [state.setToken],
+        shallow
+    )
     const onFinish = async (values: any) => {
-        setLoading(true);
-        setError("");
-
-        try {
-            // Your authentication logic goes here
-            const {username,password,remember} = values
-            if(username !== 'admin' && password !== '123456') {
-                return message.info({
-                    type: 'error',
-                    content: '账号或密码错误！',
-                });
-            }
-            navigate('/')
-        } catch (err) {
-            setError(err.message);
+        const {username, password, remember} = values
+        console.log(remember)
+        if (username !== 'admin' && password !== '123456') {
+            return message.info({
+                type: 'error',
+                content: '账号或密码错误！',
+            });
         }
-        setLoading(false);
+        setToken('Bears token')
+        if(remember) {
+            setUser({name: '超级管理员', emails: '123456@qq.com',...values})
+        } else {
+            setUser({name: '超级管理员', emails: '123456@qq.com',username: '', password: '', remember})
+        }
+        navigate('/')
     };
 
     return (
@@ -33,21 +39,21 @@ const Login = () => {
             <Form
                 name="normal_login"
                 className="login-form"
-                initialValues={{ remember: true,username: 'admin',password: '123456' }}
+                initialValues={{remember: user.remember, username: user.username, password: user.password}}
                 onFinish={onFinish}
             >
                 <Form.Item
                     name="username"
-                    rules={[{ required: true, message: '请输入用户名!' }]}
+                    rules={[{required: true, message: '请输入用户名!'}]}
                 >
-                    <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+                    <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Username"/>
                 </Form.Item>
                 <Form.Item
                     name="password"
-                    rules={[{ required: true, message: '请输入密码!' }]}
+                    rules={[{required: true, message: '请输入密码!'}]}
                 >
                     <Input
-                        prefix={<LockOutlined className="site-form-item-icon" />}
+                        prefix={<LockOutlined className="site-form-item-icon"/>}
                         type="password"
                         placeholder="Password"
                     />

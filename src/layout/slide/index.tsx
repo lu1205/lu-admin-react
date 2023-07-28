@@ -1,8 +1,7 @@
-import React from "react";
 import {Layout, Menu} from 'antd';
 import {useNavigate} from "react-router-dom";
 
-const Slide: React.FC = (props: any) => {
+const Slide = (props: any) => {
     const {items, collapsed, setCollapsed} = props
     const navigator = useNavigate()
 

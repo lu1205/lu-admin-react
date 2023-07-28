@@ -1,13 +1,14 @@
-import {Routes} from "./router";
+import {RootRoutes} from "./router";
 import {Suspense} from "react";
-import Loading from "./components/loading";
+import Loading from "@/components/loading";
+import AuthRouter from "@/router/authRouter";
 
 function App() {
-    const element = Routes()
+    const elements = RootRoutes()
     return (
         <>
             <Suspense fallback={<Loading/>}>
-                {element}
+                <AuthRouter>{elements}</AuthRouter>
             </Suspense>
         </>
     )

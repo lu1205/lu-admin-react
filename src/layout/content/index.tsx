@@ -1,11 +1,9 @@
-import React from "react";
-
 import {Layout, theme} from 'antd';
 import {Outlet} from "react-router-dom";
 
-const Content:React.FC = ()=>{
+const Content = () => {
     const {
-        token: { colorBgContainer },
+        token: {colorBgContainer},
     } = theme.useToken();
     return (
         <Layout.Content
@@ -16,7 +14,7 @@ const Content:React.FC = ()=>{
                 background: colorBgContainer,
             }}
         >
-            <Outlet />
+            <Outlet/>
         </Layout.Content>
     )
 }

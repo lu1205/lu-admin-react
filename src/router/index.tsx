@@ -1,17 +1,17 @@
 import {useRoutes} from "react-router-dom";
 import {lazy, Suspense} from 'react'
-import Loading from "../components/loading";
-const lazyComponent = (Component)=>(
-    // <Suspense fallback={<Loading/>}>
+import Loading from "@/components/loading";
+const lazyComponent = (Component:any)=>(
+    <Suspense fallback={<Loading/>}>
         <Component/>
-    // </Suspense>
+    </Suspense>
 )
 
-const Login = lazy(() => import('../pages/login'))
-const Layout = lazy(() => import('../layout'))
-const Home = lazy(() => import('../pages/home'))
-const About = lazy(() => import('../pages/about'))
-const Error = lazy(() => import('../pages/error'))
+const Login = lazy(() => import('@/pages/login'))
+const Layout = lazy(() => import('@/layout'))
+const Home = lazy(() => import('@/pages/home'))
+const About = lazy(() => import('@/pages/about'))
+const Error = lazy(() => import('@/pages/error'))
 
 const routes = [
     {
@@ -50,7 +50,7 @@ const routes = [
     }
 ]
 
-const Routes = () => {
+const RootRoutes = () => {
     return useRoutes(routes)
 }
-export {Routes}
+export {RootRoutes}

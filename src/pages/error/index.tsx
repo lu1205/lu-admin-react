@@ -1,7 +1,5 @@
-import React from "react";
 
-
-const Error: React.FC = () => {
+const Error = () => {
     return (
         <div>Error</div>
     );
