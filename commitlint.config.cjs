@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 
 const scopes = fs
-    .readdirSync(path.resolve(__dirname, 'src'), {withFileTypes: true})
+    .readdirSync(path.resolve(__dirname, 'src'), { withFileTypes: true })
     .filter((dirent) => dirent.isDirectory())
     .map((dirent) => dirent.name.replace(/s$/, ''))
 
@@ -45,10 +45,8 @@ module.exports = {
             customScope: 'Denote the SCOPE of this change:',
             subject: 'Write a SHORT, IMPERATIVE tense description of the change:\n',
             body: 'Provide a LONGER description of the change (optional). Use "|" to break new line:\n',
-            breaking:
-                'List any BREAKING CHANGES (optional). Use "|" to break new line:\n',
-            footerPrefixsSelect:
-                'Select the ISSUES type of changeList by this change (optional):',
+            breaking: 'List any BREAKING CHANGES (optional). Use "|" to break new line:\n',
+            footerPrefixsSelect: 'Select the ISSUES type of changeList by this change (optional):',
             customFooterPrefixs: 'Input ISSUES prefix:',
             footer: 'List any ISSUES by this change. E.g.: #31, #34:\n',
             confirmCommit: 'Are you sure you want to proceed with the commit above?'

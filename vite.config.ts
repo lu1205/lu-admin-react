@@ -4,7 +4,7 @@ import path from 'path'
 
 // https://vitejs.dev/config/
 
-export default ({command, mode}) => {
+export default ({ command, mode }) => {
     const env = loadEnv(mode, process.cwd(), '')
     console.log(command, mode, env)
     return {
@@ -15,12 +15,12 @@ export default ({command, mode}) => {
             open: env.VITE_OPEN,
             hmr: {
                 overlay: true
-            },
+            }
         },
         resolve: {
             alias: {
-                '@': path.resolve(__dirname, './src'),
+                '@': path.resolve(__dirname, './src')
             }
-        },
+        }
     }
 }
