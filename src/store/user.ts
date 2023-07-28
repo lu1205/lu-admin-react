@@ -1,19 +1,18 @@
-import {create} from 'zustand'
-import {persist, createJSONStorage} from 'zustand/middleware'
-import {immer} from 'zustand/middleware/immer'
+import { create } from 'zustand'
+import { persist, createJSONStorage } from 'zustand/middleware'
+import { immer } from 'zustand/middleware/immer'
 
 const useUserStore = create(
     persist(
-        immer(
-            (set) => ({
-                user: {
-                    name: '',
-                    emails: '',
-                    username: 'admin',
-                    password: '123456',
-                    remember: true,
-                },
-                /*removeUser: () => set((state) => ({
+        immer((set) => ({
+            user: {
+                name: '',
+                emails: '',
+                username: 'admin',
+                password: '123456',
+                remember: true
+            },
+            /*removeUser: () => set((state) => ({
                     user: {
                         name: '',
                         emails: '',
@@ -25,23 +24,24 @@ const useUserStore = create(
                         ...data
                     }
                 })),*/
-                setUser: (data: any) => set((state: any) => {
+            setUser: (data: any) =>
+                set((state: any) => {
                     state.user = data
                 }),
-                removeUser: () => set((state: any) => {
-                    if(!state.user.remember) {
+            removeUser: () =>
+                set((state: any) => {
+                    if (!state.user.remember) {
                         state.user.username = ''
                         state.user.password = ''
                     }
                     state.user.name = ''
                     state.user.emails = ''
-                }),
-            })
-        ),
+                })
+        })),
         {
             name: 'user',
-            storage: createJSONStorage(() => sessionStorage),
-        },
+            storage: createJSONStorage(() => sessionStorage)
+        }
     )
 )
 

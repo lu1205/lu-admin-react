@@ -1,59 +1,60 @@
-import {Form, Input, Button, message, Checkbox} from "antd";
-import {UserOutlined, LockOutlined} from "@ant-design/icons";
+import { Form, Input, Button, message, Checkbox } from 'antd'
+import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import './index.scss'
-import {useNavigate} from "react-router-dom";
-import useUserStore from "@/store/user";
-import {shallow} from "zustand/shallow";
-import useTokenStore from "@/store/token";
+import { useNavigate } from 'react-router-dom'
+import useUserStore from '@/store/user'
+import { shallow } from 'zustand/shallow'
+import useTokenStore from '@/store/token'
 
 const Login = () => {
     const navigate = useNavigate()
-    const [user,setUser] = useUserStore(
-        (state: any) => [state.user,state.setUser],
-        shallow
-    )
-    const [setToken] = useTokenStore(
-        (state: any) => [state.setToken],
-        shallow
-    )
+    const [user, setUser] = useUserStore((state: any) => [state.user, state.setUser], shallow)
+    const [setToken] = useTokenStore((state: any) => [state.setToken], shallow)
     const onFinish = async (values: any) => {
-        const {username, password, remember} = values
+        const { username, password, remember } = values
         console.log(remember)
         if (username !== 'admin' && password !== '123456') {
             return message.info({
                 type: 'error',
-                content: '账号或密码错误！',
-            });
+                content: '账号或密码错误！'
+            })
         }
         setToken('Bears token')
-        if(remember) {
-            setUser({name: '超级管理员', emails: '123456@qq.com',...values})
+        if (remember) {
+            setUser({ name: '超级管理员', emails: '123456@qq.com', ...values })
         } else {
-            setUser({name: '超级管理员', emails: '123456@qq.com',username: '', password: '', remember})
+            setUser({
+                name: '超级管理员',
+                emails: '123456@qq.com',
+                username: '',
+                password: '',
+                remember
+            })
         }
         navigate('/')
-    };
+    }
 
     return (
         <div className="form-box">
             <Form
                 name="normal_login"
                 className="login-form"
-                initialValues={{remember: user.remember, username: user.username, password: user.password}}
+                initialValues={{
+                    remember: user.remember,
+                    username: user.username,
+                    password: user.password
+                }}
                 onFinish={onFinish}
             >
-                <Form.Item
-                    name="username"
-                    rules={[{required: true, message: '请输入用户名!'}]}
-                >
-                    <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Username"/>
-                </Form.Item>
-                <Form.Item
-                    name="password"
-                    rules={[{required: true, message: '请输入密码!'}]}
-                >
+                <Form.Item name="username" rules={[{ required: true, message: '请输入用户名!' }]}>
                     <Input
-                        prefix={<LockOutlined className="site-form-item-icon"/>}
+                        prefix={<UserOutlined className="site-form-item-icon" />}
+                        placeholder="Username"
+                    />
+                </Form.Item>
+                <Form.Item name="password" rules={[{ required: true, message: '请输入密码!' }]}>
+                    <Input
+                        prefix={<LockOutlined className="site-form-item-icon" />}
                         type="password"
                         placeholder="Password"
                     />
@@ -73,7 +74,7 @@ const Login = () => {
                 </Form.Item>
             </Form>
         </div>
-    );
-};
+    )
+}
 
-export default Login;
+export default Login

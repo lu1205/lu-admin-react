@@ -1,9 +1,10 @@
-import {useRoutes} from "react-router-dom";
-import {lazy, Suspense} from 'react'
-import Loading from "@/components/loading";
-const lazyComponent = (Component:any)=>(
-    <Suspense fallback={<Loading/>}>
-        <Component/>
+import { useRoutes } from 'react-router-dom'
+import { lazy, Suspense } from 'react'
+import Loading from '@/components/loading'
+
+const lazyComponent = (Component: any) => (
+    <Suspense fallback={<Loading />}>
+        <Component />
     </Suspense>
 )
 
@@ -17,35 +18,35 @@ const routes = [
     {
         path: 'login',
         name: '登录',
-        element: lazyComponent(Login),
+        element: lazyComponent(Login)
     },
     {
         path: '/',
         name: '首页',
         key: '/',
-        element: <Layout/>,
+        element: <Layout />,
         children: [
             {
                 index: true,
                 path: '/',
                 name: '首页',
                 key: '/',
-                element: lazyComponent(Home),
+                element: lazyComponent(Home)
             },
             {
                 index: false,
                 path: 'about',
                 name: '关于',
                 key: '/about',
-                element: lazyComponent(About),
+                element: lazyComponent(About)
             },
             {
                 index: false,
                 path: 'error',
                 name: 'Error',
                 key: '/error',
-                element: lazyComponent(Error),
-            },
+                element: lazyComponent(Error)
+            }
         ]
     }
 ]
@@ -53,4 +54,4 @@ const routes = [
 const RootRoutes = () => {
     return useRoutes(routes)
 }
-export {RootRoutes}
+export { RootRoutes }
