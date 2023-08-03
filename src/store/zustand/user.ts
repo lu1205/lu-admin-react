@@ -7,35 +7,29 @@ const useUserStore = create(
         immer((set) => ({
             user: {
                 name: '',
-                emails: '',
+                email: '',
                 username: 'admin',
-                password: '123456',
+                password: '111111',
                 remember: true
             },
-            /*removeUser: () => set((state) => ({
-                    user: {
-                        name: '',
-                        emails: '',
-                    }
-                })),
-                setUser: (data: any) => set((state: any) => ({
-                    user: {
-                        ...state.user,
-                        ...data
-                    }
-                })),*/
             setUser: (data: any) =>
                 set((state: any) => {
                     state.user = data
                 }),
             removeUser: () =>
                 set((state: any) => {
+                    state.user = {
+                        name: '',
+                        email: '',
+                        username: 'admin',
+                        password: '111111',
+                        remember: true
+                    }
                     if (!state.user.remember) {
                         state.user.username = ''
                         state.user.password = ''
+                        state.user.remember = false
                     }
-                    state.user.name = ''
-                    state.user.emails = ''
                 })
         })),
         {

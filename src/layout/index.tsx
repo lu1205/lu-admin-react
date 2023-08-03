@@ -26,7 +26,27 @@ const Layouts = () => {
             key: '/error',
             path: 'error',
             icon: <UserOutlined />,
-            label: '错误页面'
+            label: '错误页面',
+            children: [
+                {
+                    key: '/error/403',
+                    path: '403',
+                    icon: <UserOutlined />,
+                    label: '403'
+                },
+                {
+                    key: '/error/404',
+                    path: '404',
+                    icon: <UserOutlined />,
+                    label: '404'
+                },
+                {
+                    key: '/error/500',
+                    path: '500',
+                    icon: <UserOutlined />,
+                    label: '500'
+                }
+            ]
         }
     ]
     const [collapsed, setCollapsed] = useState(false)

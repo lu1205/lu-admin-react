@@ -12,9 +12,11 @@ const Login = lazy(() => import('@/pages/login'))
 const Layout = lazy(() => import('@/layout'))
 const Home = lazy(() => import('@/pages/home'))
 const About = lazy(() => import('@/pages/about'))
-const Error = lazy(() => import('@/pages/error'))
+const Error403 = lazy(() => import('@/pages/error/403'))
+const Error404 = lazy(() => import('@/pages/error/404'))
+const Error500 = lazy(() => import('@/pages/error/500'))
 
-const routes = [
+const routes: any[] = [
     {
         path: 'login',
         name: '登录',
@@ -45,7 +47,29 @@ const routes = [
                 path: 'error',
                 name: 'Error',
                 key: '/error',
-                element: lazyComponent(Error)
+                children: [
+                    {
+                        index: false,
+                        path: '403',
+                        name: '403',
+                        key: '/error/403',
+                        element: lazyComponent(Error403)
+                    },
+                    {
+                        index: false,
+                        path: '404',
+                        name: '404',
+                        key: '/error/404',
+                        element: lazyComponent(Error404)
+                    },
+                    {
+                        index: false,
+                        path: '500',
+                        name: '500',
+                        key: '/error/500',
+                        element: lazyComponent(Error500)
+                    }
+                ]
             }
         ]
     }

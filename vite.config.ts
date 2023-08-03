@@ -15,6 +15,16 @@ export default ({ command, mode }) => {
             open: env.VITE_OPEN,
             hmr: {
                 overlay: true
+            },
+            proxy: {
+                '^/api|^/my': {
+                    target: 'http://127.0.0.1:3007',
+                    changeOrigin: true
+                },
+                '^/router': {
+                    target: 'http://127.0.0.1:3007',
+                    changeOrigin: true
+                }
             }
         },
         resolve: {

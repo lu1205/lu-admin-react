@@ -1,44 +1,68 @@
-import { Form, Input, Button, message, Checkbox } from 'antd'
+import { Form, Input, Button, Checkbox } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
-import './index.scss'
 import { useNavigate } from 'react-router-dom'
-import useUserStore from '@/store/user'
+import { login } from '@/api'
+
+// import { useDispatch, useSelector } from 'react-redux'
+// import { setToken } from '@/store/redux/token'
+// import { setUser } from '@/store/redux/user'
+
+// zustand
+import useTokenStore from '@/store/zustand/token'
+import useUserStore from '@/store/zustand/user'
 import { shallow } from 'zustand/shallow'
-import useTokenStore from '@/store/token'
 
 const Login = () => {
     const navigate = useNavigate()
+    // const dispatch = useDispatch()
+    // const user = useSelector((state: any) => state.userToken)
+
+    // zustand
+    const setToken = useTokenStore((state: any) => state.setToken, shallow)
     const [user, setUser] = useUserStore((state: any) => [state.user, state.setUser], shallow)
-    const [setToken] = useTokenStore((state: any) => [state.setToken], shallow)
+
     const onFinish = async (values: any) => {
         const { username, password, remember } = values
-        console.log(remember)
-        if (username !== 'admin' && password !== '123456') {
-            return message.info({
-                type: 'error',
-                content: '账号或密码错误！'
-            })
+        const res: any = await login({ username, password })
+        if (res?.status === 0) {
+            // dispatch(setToken(res.data.token))
+
+            // zustand
+            setToken(res.data.token)
+            if (remember) {
+                /*dispatch(
+                    setUser({ ...res.data.userInfo, name: res.data.userInfo.nickname, ...values })
+                )*/
+
+                // zustand
+                setUser({ ...res.data.userInfo, name: res.data.userInfo.nickname, ...values })
+            } else {
+                /*dispatch(
+                    setUser({
+                        ...res.data.userInfo,
+                        name: res.data.userInfo.nickname,
+                        username: '',
+                        password: '',
+                        remember
+                    })
+                )*/
+
+                // zustand
+                setUser({
+                    ...res.data.userInfo,
+                    name: res.data.userInfo.nickname,
+                    username: '',
+                    password: '',
+                    remember
+                })
+            }
+            navigate('/')
         }
-        setToken('Bears token')
-        if (remember) {
-            setUser({ name: '超级管理员', emails: '123456@qq.com', ...values })
-        } else {
-            setUser({
-                name: '超级管理员',
-                emails: '123456@qq.com',
-                username: '',
-                password: '',
-                remember
-            })
-        }
-        navigate('/')
     }
 
     return (
-        <div className="form-box">
+        <div className="absolute w-[300px] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
             <Form
-                name="normal_login"
-                className="login-form"
                 initialValues={{
                     remember: user.remember,
                     username: user.username,
@@ -47,28 +71,21 @@ const Login = () => {
                 onFinish={onFinish}
             >
                 <Form.Item name="username" rules={[{ required: true, message: '请输入用户名!' }]}>
-                    <Input
-                        prefix={<UserOutlined className="site-form-item-icon" />}
-                        placeholder="Username"
-                    />
+                    <Input prefix={<UserOutlined />} placeholder="Username" />
                 </Form.Item>
                 <Form.Item name="password" rules={[{ required: true, message: '请输入密码!' }]}>
-                    <Input
-                        prefix={<LockOutlined className="site-form-item-icon" />}
-                        type="password"
-                        placeholder="Password"
-                    />
+                    <Input prefix={<LockOutlined />} type="password" placeholder="Password" />
                 </Form.Item>
                 <Form.Item>
                     <Form.Item name="remember" valuePropName="checked" noStyle>
-                        <Checkbox>Remember me</Checkbox>
+                        <Checkbox>记住密码</Checkbox>
                     </Form.Item>
                 </Form.Item>
                 <Form.Item>
-                    <div>账号: admin 密码: 123456</div>
+                    <div>账号: admin 密码: 111111</div>
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" className="login-form-button">
+                    <Button type="primary" htmlType="submit" className="w-full">
                         登录
                     </Button>
                 </Form.Item>
