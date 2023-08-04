@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
+import { storeDevtool } from '@/hooks/zustandStoreView.ts'
 
 const useUserStore = create(
     persist(
@@ -38,5 +39,7 @@ const useUserStore = create(
         }
     )
 )
+
+storeDevtool('useUserStore', useUserStore)
 
 export default useUserStore

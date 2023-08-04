@@ -1,10 +1,16 @@
 import { Layout, theme } from 'antd'
-import { Outlet } from 'react-router-dom'
+import { useOutlet } from 'react-router-dom'
+import { CSSTransition, SwitchTransition } from 'react-transition-group'
+import './index.scss'
 
+// 使用react-spring
 const Content = () => {
     const {
         token: { colorBgContainer }
     } = theme.useToken()
+
+    const currentOutlet = useOutlet()
+
     return (
         <Layout.Content
             style={{
@@ -14,7 +20,11 @@ const Content = () => {
                 background: colorBgContainer
             }}
         >
-            <Outlet />
+            <SwitchTransition>
+                <CSSTransition key={location.pathname} className="fade" timeout={300}>
+                    {currentOutlet}
+                </CSSTransition>
+            </SwitchTransition>
         </Layout.Content>
     )
 }

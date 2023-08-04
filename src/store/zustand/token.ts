@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 import useUserStore from '@/store/zustand/user.ts'
+import { storeDevtool } from '@/hooks/zustandStoreView.ts'
 
 const useTokenStore = create(
     persist(
@@ -25,5 +26,5 @@ const useTokenStore = create(
         }
     )
 )
-
+storeDevtool('useTokenStore', useTokenStore)
 export default useTokenStore
