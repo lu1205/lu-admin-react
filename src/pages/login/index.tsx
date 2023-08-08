@@ -11,6 +11,7 @@ import { login } from '@/api'
 import useTokenStore from '@/store/zustand/token'
 import useUserStore from '@/store/zustand/user'
 import { shallow } from 'zustand/shallow'
+import useMenuStore from '@/store/zustand/menu'
 
 const Login = () => {
     const navigate = useNavigate()
@@ -20,6 +21,7 @@ const Login = () => {
     // zustand
     const setToken = useTokenStore((state: any) => state.setToken, shallow)
     const [user, setUser] = useUserStore((state: any) => [state.user, state.setUser], shallow)
+    const setMenuList = useMenuStore((state: any) => state.setMenuList, shallow)
 
     const onFinish = async (values: any) => {
         const { username, password, remember } = values
@@ -56,6 +58,51 @@ const Login = () => {
                     remember
                 })
             }
+            const menuList = [
+                {
+                    key: '/',
+                    path: 'home',
+                    icon: 'icon-shouye',
+                    // icon: <UserOutlined />,
+                    label: '首页'
+                },
+                {
+                    key: '/about',
+                    path: 'about',
+                    icon: 'icon-shouye',
+                    // icon: <UserOutlined />,
+                    label: '关于'
+                },
+                {
+                    key: '/error',
+                    path: 'error',
+                    icon: 'icon-shouye',
+                    // icon: <UserOutlined />,
+                    label: '错误页面',
+                    redirect: '/error/403',
+                    children: [
+                        {
+                            key: '/error/403',
+                            path: '403',
+                            // icon: <UserOutlined />,
+                            label: '403'
+                        },
+                        {
+                            key: '/error/404',
+                            path: '404',
+                            // icon: <UserOutlined />,
+                            label: '404'
+                        },
+                        {
+                            key: '/error/500',
+                            path: '500',
+                            // icon: <UserOutlined />,
+                            label: '500'
+                        }
+                    ]
+                }
+            ]
+            setMenuList(menuList)
             navigate('/')
         }
     }

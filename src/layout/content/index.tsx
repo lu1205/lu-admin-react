@@ -2,6 +2,7 @@ import { Layout, theme } from 'antd'
 import { useOutlet } from 'react-router-dom'
 import { CSSTransition, SwitchTransition } from 'react-transition-group'
 import './index.scss'
+import { useRef } from 'react'
 
 // 使用react-spring
 const Content = () => {
@@ -10,6 +11,8 @@ const Content = () => {
     } = theme.useToken()
 
     const currentOutlet = useOutlet()
+    // 解决CSSTransition抛出 findDOMNode is deprecated in StrictMode 错误
+    const nodeRef = useRef(null)
 
     return (
         <Layout.Content
@@ -21,7 +24,12 @@ const Content = () => {
             }}
         >
             <SwitchTransition>
-                <CSSTransition key={location.pathname} className="fade" timeout={300}>
+                <CSSTransition
+                    key={location.pathname}
+                    nodeRef={nodeRef}
+                    className="fade"
+                    timeout={300}
+                >
                     {currentOutlet}
                 </CSSTransition>
             </SwitchTransition>

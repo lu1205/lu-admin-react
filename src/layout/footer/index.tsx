@@ -1,6 +1,6 @@
 import { Layout } from 'antd'
 
 const Footer = () => {
-    return <Layout.Footer style={{ textAlign: 'center' }}>LU-ADMIN-REACT</Layout.Footer>
+    return <Layout.Footer className="bg-white text-center">LU-ADMIN-REACT</Layout.Footer>
 }
 export default Footer

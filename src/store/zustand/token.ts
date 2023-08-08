@@ -14,7 +14,6 @@ const useTokenStore = create(
                 }),
             removeToken: () =>
                 set((state: any) => {
-                    console.log((useUserStore as any).getState().user)
                     const removeUser = (useUserStore as any).getState().removeUser
                     state.token = ''
                     removeUser()

@@ -6,14 +6,14 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --fix --ignore-path .gitignore",
+    "lint": "eslint . --ext ts,tsx --fix --ignore-path .eslintignore",
     "preview": "vite preview",
     "reInstall": "rimraf node_modules && pnpm install",
-    "lint:eslint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "lint:eslint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .eslintignore",
     "lint:lint-staged": "lint-staged -c ./.husky/lint-staged.config.cjs",
     "lint:pretty": "pretty-quick --staged",
-    "lint:prettier": "prettier --write \"src/**/*.{cjs,js,ts,json,tsx,jsx,css,scss,less,vue,html,md}\"",
-    "lint:stylelint": "stylelint \"./**/*.{css,less,scss,vue,html}\" --fix",
+    "lint:prettier": "prettier --write \"src/**/*.{cjs,js,ts,json,tsx,jsx,css,scss,less,vue,html,md}\" --ignore-path .prettierignore",
+    "lint:stylelint": "stylelint \"./**/*.{css,less,scss,vue,html}\" --fix --ignore-path .stylelintignore",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -48,6 +48,7 @@
     "immer": "^10.0.2",
     "lint-staged": "^13.2.3",
     "postcss": "^8.4.27",
+    "postcss-html": "^1.5.0",
     "postcss-scss": "^4.0.6",
     "prettier": "^2.8.8",
     "pretty-quick": "^3.1.3",

@@ -1,14 +1,20 @@
 import { Layout, Menu } from 'antd'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
+import icon from '@/assets/defaultImg/lu.png'
+import { useEffect, useState } from 'react'
 
 const Slide = (props: any) => {
     const { items, collapsed, setCollapsed } = props
     const navigator = useNavigate()
     const clickMenu = (val: any) => {
-        const { key, keyPath } = val
-        console.log(key, keyPath)
+        const { key } = val
         navigator(key)
     }
+    const location = useLocation()
+    const [selectedPath, setSelectedPath] = useState(location.pathname)
+    useEffect(() => {
+        setSelectedPath(location.pathname)
+    }, [location.pathname])
 
     return (
         <Layout.Sider
@@ -19,8 +25,16 @@ const Slide = (props: any) => {
             collapsedWidth="0"
             onBreakpoint={(broken) => setCollapsed(broken)}
         >
-            <div className="demo-logo-vertical" />
-            <Menu theme="dark" mode="inline" items={items} onClick={(item) => clickMenu(item)} />
+            <div className="w-[100%] flex justify-center items-center py-[16px]">
+                <img src={icon} className="w-[60px] h-[60px]" alt="" />
+            </div>
+            <Menu
+                theme="dark"
+                mode="inline"
+                selectedKeys={[selectedPath]}
+                items={items}
+                onClick={(item) => clickMenu(item)}
+            />
         </Layout.Sider>
     )
 }

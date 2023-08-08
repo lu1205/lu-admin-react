@@ -1,4 +1,4 @@
-import { Layout, Button, theme, Dropdown, Breadcrumb } from 'antd'
+import { Layout, Button, theme, Dropdown, Breadcrumb, Modal } from 'antd'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { logout as logoutAPI } from '@/api'
@@ -10,6 +10,8 @@ import { logout as logoutAPI } from '@/api'
 import useTokenStore from '@/store/zustand/token.ts'
 import useUserStore from '@/store/zustand/user'
 import { shallow } from 'zustand/shallow'
+import { findRoute } from '@/utils/routeUtil'
+import { useEffect, useState } from 'react'
 
 const Header = (props: any) => {
     const { collapsed, setCollapsed } = props
@@ -24,17 +26,27 @@ const Header = (props: any) => {
     // zustand
     const removeToken = useTokenStore((state: any) => state.removeToken, shallow)
     const user = useUserStore((state: any) => state.user, shallow)
-
     const exit = async () => {
-        const res: any = await logoutAPI()
-        if (res?.status === 0) {
-            // dispatch(removeToken())
-            // dispatch(removeUser())
+        Modal.confirm({
+            title: '提示',
+            content: <div>确定要退出吗？</div>,
+            okText: '确定',
+            cancelText: '取消',
+            onOk: async () => {
+                const res: any = await logoutAPI()
+                if (res?.status === 0) {
+                    // dispatch(removeToken())
+                    // dispatch(removeUser())
 
-            // zustand
-            removeToken()
-            navigate('/login')
-        }
+                    // zustand
+                    removeToken()
+                    navigate('/login')
+                }
+            },
+            onCancel: () => {
+                console.log('Cancel')
+            }
+        })
     }
 
     const items = [
@@ -43,30 +55,27 @@ const Header = (props: any) => {
             label: <div onClick={exit}>退出登录</div>
         }
     ]
-    const breadcrumbNameMap: Record<string, string> = {
-        '/apps': 'Application List',
-        '/apps/1': 'Application1',
-        '/apps/2': 'Application2',
-        '/apps/1/detail': 'Detail',
-        '/apps/2/detail': 'Detail'
-    }
+
     const location = useLocation()
-    const pathSnippets = location.pathname.split('/').filter((i) => i)
-
-    const extraBreadcrumbItems = pathSnippets.map((_, index) => {
-        const url = `/${pathSnippets.slice(0, index + 1).join('/')}`
-        return {
-            key: url,
-            title: <Link to={url}>{breadcrumbNameMap[url]}</Link>
-        }
-    })
-
-    const breadcrumbItems = [
-        {
-            title: <Link to="/">Home</Link>,
-            key: 'home'
-        }
-    ].concat(extraBreadcrumbItems)
+    const [breadcrumbItems, setBreadcrumbItems] = useState([])
+    useEffect(() => {
+        const breadcrumbItems2 = findRoute(location.pathname)
+            .map((item) => {
+                return {
+                    key: item.key,
+                    title: <Link to={item.redirect ? item.redirect : item.key}>{item.label}</Link>
+                }
+            })
+            .reverse()
+            .filter((item) => item.key !== '/')
+        setBreadcrumbItems([
+            {
+                key: '/',
+                title: <Link to="/">首页</Link>
+            },
+            ...breadcrumbItems2
+        ] as any)
+    }, [location.pathname])
 
     return (
         <Layout.Header style={{ padding: 0, background: colorBgContainer }}>
@@ -82,7 +91,9 @@ const Header = (props: any) => {
                     }}
                 />
                 <div className="flex-1 flex justify-between items-center mr-[16px]">
-                    <Breadcrumb items={breadcrumbItems} />
+                    <div>
+                        <Breadcrumb items={breadcrumbItems} />
+                    </div>
                     <Dropdown menu={{ items }} placement="bottomRight" arrow>
                         <div>{user.name}</div>
                     </Dropdown>
